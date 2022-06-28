@@ -1,41 +1,10 @@
 import { Formik, Field, Form, ErrorMessage } from 'formik';
-import React, { useState } from 'react';
-import { registerArtist } from 'services/register'
+import React from 'react';
+import useRegister from 'hooks/useRegister'
 import './RegisterForm.css'
 
-const initialValues = {
-    username: '',
-    password: '',
-    alias: '',
-    conditions: []
-
-}
-
-const validateFields = (values) => {
-    console.log(values)
-    const errors = {};
-    if (!values.username) {
-        errors.username = 'Required username';
-    }
-    if (!values.alias) {
-        errors.alias = 'Required alias';
-    }
-    if (!values.password) {
-        errors.password = 'Required password';
-    } else if (values.password.length < 6) {
-        errors.password = 'Password must be at least 6 characters';
-    }
-    if(values.conditions.length !== 2){
-        errors.conditions = 'You must accept the conditions';
-    }
-    console.log(errors)
-
-    return errors;
-}
-
 export default function RegisterForm() {
-
-    const [registered, setRegistered] = useState(false);
+    const {registered, initialValues, validateFields, regArtist} = useRegister()
 
     if (registered) {
         <h1>Registrado</h1>
@@ -47,12 +16,9 @@ export default function RegisterForm() {
                 initialValues={initialValues}
                 validate={validateFields}
                 onSubmit={(values, { setFieldError }) => {
-                    return registerArtist(values)
-                        .then(() => {
-                            setRegistered(true);
-                        })
+                    return regArtist(values)
                         .catch(() => {
-                            setFieldError('username', 'El usuario no es válido')
+                            setFieldError('generic', 'Revisa los campos e intentalo de nuevo')
                         })
                 }}
             >
@@ -92,7 +58,7 @@ export default function RegisterForm() {
                             </div>
 
                             <button type="submit" className="submit-btn" disabled={isSubmitting}>Registrar</button>
-
+                            <ErrorMessage name="generic" component="small" className="form-errors" />
                         </Form>
                     )
                 }
