@@ -1,10 +1,10 @@
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import React from 'react';
 import useRegister from 'hooks/useRegister'
-import './RegisterForm.css'
+import '../RegisterForm.css'
 
-export default function RegisterForm() {
-    const {registered, initialValues, validateFields, regArtist} = useRegister()
+export default function RegisterBuyer() {
+    const { registered, initialValues, validateFields, regBuyer } = useRegister()
 
     if (registered) {
         <h1>Registrado</h1>
@@ -12,11 +12,13 @@ export default function RegisterForm() {
 
     return (
         <div className="form-container">
+            <h3>Registro Comprador</h3>
+
             <Formik
                 initialValues={initialValues}
                 validate={validateFields}
                 onSubmit={(values, { setFieldError }) => {
-                    return regArtist(values)
+                    return regBuyer(values)
                         .catch(() => {
                             setFieldError('generic', 'Revisa los campos e intentalo de nuevo')
                         })
@@ -48,7 +50,7 @@ export default function RegisterForm() {
                             <div role="group" className="form-checkbox" aria-labelledby="checkbox-group-form">
                                 <label>
                                     <Field type="checkbox" name="conditions" value="contentAccept" />
-                                    No subiré contenido inapropiado, confirmo que mis intenciones son éticas y no fraudulentas, no haré mal uso de la plataforma, y tengo un sueldo mensual por debajo del mínimo profesional
+                                    No subiré contenido inapropiado, confirmo que mis intenciones son éticas y no fraudulentas, no haré mal uso de la plataforma
                                 </label>
                                 <label>
                                     <Field type="checkbox" name="conditions" value="passwordAccept" />
@@ -56,6 +58,12 @@ export default function RegisterForm() {
                                 </label>
                                 <ErrorMessage name="conditions" component="small" className="form-errors" />
                             </div>
+
+                            <label>
+                                Tu perfil va a ser: 
+                                <Field type="checkbox" name="toggle" />
+                                {values.toggle ? "Privado" : "Publico"}
+                            </label>
 
                             <button type="submit" className="submit-btn" disabled={isSubmitting}>Registrar</button>
                             <ErrorMessage name="generic" component="small" className="form-errors" />
