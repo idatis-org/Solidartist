@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3030/api';
+import { API_URL } from './settings'
 
 function registerBuyer(body) {
     return fetch(`${API_URL}/user/register`, {
@@ -8,7 +8,7 @@ function registerBuyer(body) {
         },
         body: JSON.stringify(body)
     }).then(res => {
-        if (!res.ok) throw new Error(res.statusText);
+        if (!res.ok) throw new Error(res.error);
         return true
     })
 }
@@ -21,7 +21,7 @@ function registerArtist(body) {
         },
         body: JSON.stringify(body)
     }).then(res => {
-        if (!res.ok) throw new Error(res.statusText);
+        if (!res.ok) throw new Error(res.error);
         return true
     })
 }
