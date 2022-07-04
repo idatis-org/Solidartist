@@ -18,7 +18,17 @@ export default function RegisterBuyer() {
                 initialValues={initialValues}
                 validate={validateFields}
                 onSubmit={(values, { setFieldError }) => {
-                    return regBuyer(values)
+
+                    const body = {
+                        username: values.username,
+                        password: values.password,
+                        alias: values.alias,
+                        role: 2,
+                        profile_type: values.toggle,
+                        conditions: values.conditions.length === 2 ? true : false
+                    }
+                    
+                    return regBuyer(body)
                         .catch(() => {
                             setFieldError('generic', 'Revisa los campos e intentalo de nuevo')
                         })

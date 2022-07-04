@@ -1,25 +1,25 @@
-const API_URL = 'http://localhost:3000/api/';
+const API_URL = 'http://localhost:3030/api';
 
-function registerBuyer({ username, password }) {
-    return fetch(`${API_URL}/register`, {
+function registerBuyer(body) {
+    return fetch(`${API_URL}/user/register`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify(body)
     }).then(res => {
         if (!res.ok) throw new Error(res.statusText);
         return true
     })
 }
 
-function registerArtist({ username, password }) {
-    return fetch(`${API_URL}/register`, {
+function registerArtist(body) {
+    return fetch(`${API_URL}/user/register`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify(body)
     }).then(res => {
         if (!res.ok) throw new Error(res.statusText);
         return true
