@@ -17,7 +17,16 @@ export default function RegisterArtist() {
                 initialValues={initialValues}
                 validate={validateFields}
                 onSubmit={(values, { setFieldError }) => {
-                    return regArtist(values)
+                    const body = {
+                        username: values.username,
+                        password: values.password,
+                        alias: values.alias,
+                        role: 1,
+                        profile_type: false,
+                        conditions: values.conditions.length === 2 ? true : false
+                    }
+
+                    return regArtist(body)
                         .catch(() => {
                             setFieldError('generic', 'Revisa los campos e intentalo de nuevo')
                         })
