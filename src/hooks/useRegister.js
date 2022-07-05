@@ -6,6 +6,7 @@ import { registerArtist, registerBuyer } from 'services/register'
 export default function useRegister() {
     const [registered, setRegistered] = useState(false)
 
+    //Initial values of the form
     const initialValues = {
         username: '',
         password: '',
@@ -13,6 +14,7 @@ export default function useRegister() {
         conditions: []
     }
     
+    //Validations to perform on the form
     const validateFields = (values) => {
         console.log(values)
         const errors = {};
@@ -35,12 +37,15 @@ export default function useRegister() {
         return errors;
     }
 
+    //Function to register an Artist
     const regArtist = (values) => {
         return registerArtist(values)
         .then(() => {
             setRegistered(true);
         })
     }
+
+    //Function to register a Buyer
 
     const regBuyer = (values) => {
         return registerBuyer(values)
