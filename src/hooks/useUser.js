@@ -17,7 +17,6 @@ export default function useUser() {
             })
             .catch(error => {
                 window.sessionStorage.removeItem('token');
-                setState({ loading: false, error: false })
                 console.log(error);
                 setState({ loading: false, error: true })
             })

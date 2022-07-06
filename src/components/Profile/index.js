@@ -3,13 +3,12 @@ import { getProfile } from 'services/userService';
 
 export default function Profile({ alias }) {
     const [userData, setUserData] = useState([])
-    console.log(alias)
 
     useEffect(() => {
         getProfile(alias)
             .then(setUserData)
             .catch(err => console.log(err))
-    }, [])
+    }, [alias])
 
     console.log(userData)
 
