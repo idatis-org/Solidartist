@@ -8,6 +8,8 @@ const multer = require('multer');
 const { Error } = require('sequelize')
 
 const User = model.User;
+const UserPiece = model.UserPiece;
+const ArtPiece = model.ArtPiece;
 
 const { secretKey, expiredAfter } = Config;
 
@@ -25,10 +27,35 @@ router.get('/', (req, res) => {
 //FIND A USER
 router.get('/:alias', (req, res) => {
     const { alias } = req.params;
-    User.findOne({ where: {alias} })
+    User.findOne({ where: { alias } })
         .then(user => res.status(200).json({ ok: true, data: user }))
         .catch(err => res.status(400).json({ ok: false, data: err }))
 })
+
+//FINDS THE ART PIECES OF AN ARTIST GIVEN AN ID
+router.get('/art/creator/:id', (req, res) => {
+    const { id } = req.params;
+    UserPiece.findAll({ where: { id_creator: id } })
+        .then(resp => {
+            const idsPieces = resp.map(el => (el.id_piece))
+            ArtPiece.findAll({ where: { id: idsPieces } })
+                .then(resp => res.status(200).json({ ok: true, data: resp }))
+                .catch(err => res.status(400).json({ ok: false, data: err }))
+        })
+})
+
+//FINDS THE PIECES THAT BELONGS TO A GIVEN ID
+router.get('/art/owner/:id', (req, res) => {
+    const { id } = req.params;
+    UserPiece.findAll({ where: { id_current_owner: id } })
+        .then(resp => {
+            const idsPieces = resp.map(el => (el.id_piece))
+            ArtPiece.findAll({ where: { id: idsPieces } })
+                .then(resp => res.status(200).json({ ok: true, data: resp }))
+                .catch(err => res.status(400).json({ ok: false, data: err }))
+        })
+})
+
 
 //REGISTER A USER
 router.post('/register', function (req, res, next) {
