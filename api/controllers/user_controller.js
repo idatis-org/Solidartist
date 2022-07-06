@@ -92,6 +92,7 @@ router.post('/login', (req, res) => {
                 {
                     expiredAt: new Date().getTime() + expiredAfter,
                     username: usuari.username,
+                    alias: usuari.alias,
                     id: usuari.id,
                     role: usuari.role
                 },
