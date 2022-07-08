@@ -1,5 +1,5 @@
 const express = require('express');
-const cors =  require('cors');
+const cors = require('cors');
 
 const userController = require('./controllers/user_controller');
 
@@ -11,6 +11,9 @@ app.use(cors());
 app.get('/', (req, res) => {
     res.json("Funciona")
 })
+
+app.use("/img", express.static('uploads'));
+
 
 app.use('/api/user', userController);
 

@@ -12,7 +12,7 @@ export default function Home() {
     return (
         <>
             HOME
-            <div onClick={goToProfile}>Go to TEST profile</div>
+            <button onClick={goToProfile}>Go to TEST profile</button>
         </>
     );
 }
