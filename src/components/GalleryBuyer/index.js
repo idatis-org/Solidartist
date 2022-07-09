@@ -13,16 +13,18 @@ export default function GalleryBuyer({ id }) {
     return (
         <>
             <h1>ART THAT I OWN</h1>
-            {
-                artOwner.map((piece, idx) => (
-                    <div key={idx}>
-                        <h3>{piece.title}</h3>
-                        <div>
-                            {piece.content}
+            <div className='gallery-container'>
+                {
+                    artOwner.map((piece, idx) => (
+                        <div key={idx} className="gallery-piece-container">
+                            <h1>{piece.title}</h1>
+                            <div>
+                                {piece.content}
+                            </div>
                         </div>
-                    </div>
-                ))
-            }
+                    ))
+                }
+            </div>
 
         </>
     )
