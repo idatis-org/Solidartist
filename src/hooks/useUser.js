@@ -4,12 +4,12 @@ import LoginService from 'services/login';
 
 export default function useUser() {
     //Token in the context
-    const { token, setToken } = useContext(UserContext);
+    const { token, setToken, userInfo } = useContext(UserContext);
     const [state, setState] = useState({ loading: false, error: false })
 
-    const login = useCallback((username, password) => {
+    const login = useCallback(({ username, password }, setStatus) => {
         setState({ loading: true, error: false })
-        LoginService({username, password})
+        LoginService({ username, password })
             .then(jwt => {
                 window.sessionStorage.setItem('token', jwt);
                 setToken(jwt)
@@ -17,7 +17,8 @@ export default function useUser() {
             })
             .catch(error => {
                 window.sessionStorage.removeItem('token');
-                console.log(error);
+                console.log("Error catch login: " + error);
+                setStatus({ databaseError: 'Revisa los campos e intentalo de nuevo' })
                 setState({ loading: false, error: true })
             })
     }, [setToken])
@@ -32,6 +33,7 @@ export default function useUser() {
         isLogged: Boolean(token),
         isLoginLoading: state.loading,
         hasLoginError: state.error,
+        userInfo,
         login,
         logout
     }

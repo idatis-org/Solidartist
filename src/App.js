@@ -16,13 +16,13 @@ function App() {
         <BrowserRouter>
           <Header />
           <Routes>
-          <Route
+            <Route
               path="/"
-              element={<Home/>}
+              element={<Home />}
             />
             <Route
               path="/register"
-              element={<Register/>}
+              element={<Register />}
             />
             <Route
               path="/login"
@@ -30,6 +30,10 @@ function App() {
             />
             <Route
               path="/:alias"
+              element={<Profile />}
+            />
+            <Route
+              path="/user/:alias"
               element={<Profile />}
             />
           </Routes>
