@@ -3,6 +3,7 @@ import UserContext from 'context/UserContext';
 import LoginService from 'services/login';
 
 export default function useUser() {
+    //Token in the context
     const { token, setToken } = useContext(UserContext);
     const [state, setState] = useState({ loading: false, error: false })
 
@@ -16,12 +17,12 @@ export default function useUser() {
             })
             .catch(error => {
                 window.sessionStorage.removeItem('token');
-                setState({ loading: false, error: false })
                 console.log(error);
                 setState({ loading: false, error: true })
             })
     }, [setToken])
 
+    //Log out function that removes the token from the session storage
     const logout = useCallback(() => {
         window.sessionStorage.removeItem('token');
         setToken(null);

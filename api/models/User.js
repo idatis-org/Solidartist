@@ -1,9 +1,9 @@
-
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define('User', {
         username: {
             type:DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         password: {
             type:DataTypes.STRING,
@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
         },
         alias: {
             type:DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         profile_type: {
             type:DataTypes.BOOLEAN,

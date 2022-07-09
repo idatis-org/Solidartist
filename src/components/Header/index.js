@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate, useMatch } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useUser from "hooks/useUser";
 import "./Header.css"
 
@@ -11,6 +11,7 @@ export default function Header() {
         logout()
     }
 
+    //Changes the Login button for a Log out button depending on the state
     const renderLoginButton = () => {
         return !isLogged ?
             <>
