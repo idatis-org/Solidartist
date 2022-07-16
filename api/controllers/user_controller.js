@@ -25,7 +25,7 @@ const storage = multer.diskStorage({
     }
 })
 
-const upload = multer({ storage: storage }).single('file');
+const upload = multer({ storage: storage }).array('files');
 
 
 //FIND ALL USERS
@@ -65,6 +65,39 @@ router.get('/art/owner/:id', (req, res) => {
                 .then(resp => res.status(200).json({ ok: true, data: resp }))
                 .catch(err => res.status(400).json({ ok: false, data: err }))
         })
+})
+
+//EDIT USER
+router.put('/edit', (req, res) => {
+    upload(req, res, function (err) {
+        if (err instanceof multer.MulterError) {
+            return res.status(500).json(err)
+        } else if (err) {
+            return res.status(500).json(err)
+        }
+
+        let usuario = {
+            description: req.body.description,
+            profile_type: req.body.profile_type,
+        }
+        //files[0] is the user profile photo and the files[1] is the wall profile photo
+        if (req.files) {
+            if (req.files[0]) {
+                usuario.user_img = req.files[0].filename
+            }
+            if (req.files[1]) {
+                usuario.profile_img = req.files[1].filename
+            }
+        }
+
+        console.log(usuario)
+        const { id } = req.body;
+
+        User.findOne({ where: { id: id } })
+            .then(user => user.update(usuario))
+            .then(result => res.status(200).json({ ok: true, data: result }))
+            .catch(err => res.status(400).json({ ok: false, data: err }))
+    })
 })
 
 

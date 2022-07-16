@@ -9,20 +9,26 @@ import Login from 'pages/Login'
 import Home from 'pages/Home'
 import Profile from 'pages/Profile'
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import useUser from 'hooks/useUser';
+
 function App() {
+  const { token } = useUser();
+
   return (
     <div className="App">
       <UserContextProvider>
         <BrowserRouter>
           <Header />
           <Routes>
-          <Route
+            <Route
               path="/"
-              element={<Home/>}
+              element={<Home />}
             />
             <Route
               path="/register"
-              element={<Register/>}
+              element={<Register />}
             />
             <Route
               path="/login"
@@ -30,6 +36,10 @@ function App() {
             />
             <Route
               path="/:alias"
+              element={<Profile />}
+            />
+            <Route
+              path="/user/:alias"
               element={<Profile />}
             />
           </Routes>
