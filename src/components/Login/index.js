@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import useUser from 'hooks/useUser';
 import { useNavigate } from 'react-router-dom';
@@ -26,9 +26,11 @@ export default function Login() {
     //, setStatus] = useState({ databaseError: '' })
     let navigate = useNavigate()
 
-    if (isLogged && !isLoginLoading) {
-        navigate('/', { replace: true })
-    }
+    useEffect(() => {
+        if (isLogged && !isLoginLoading) {
+            navigate('/', { replace: true })
+        }
+    }, [isLogged, isLoginLoading, navigate])
 
     const renderForm = ({ errors, isSubmitting, values, status }) => (
         <Form className='form'>

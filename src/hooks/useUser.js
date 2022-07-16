@@ -1,6 +1,9 @@
 import React, { useState, useContext, useCallback } from 'react';
 import UserContext from 'context/UserContext';
 import LoginService from 'services/login';
+import { getProfile } from 'services/userService';
+import jwt_decode from "jwt-decode";
+
 
 export default function useUser() {
     //Token in the context
@@ -14,6 +17,7 @@ export default function useUser() {
                 window.sessionStorage.setItem('token', jwt);
                 setToken(jwt)
                 setState({ loading: false, error: false })
+
             })
             .catch(error => {
                 window.sessionStorage.removeItem('token');
@@ -21,6 +25,7 @@ export default function useUser() {
                 setStatus({ databaseError: 'Revisa los campos e intentalo de nuevo' })
                 setState({ loading: false, error: true })
             })
+
     }, [setToken])
 
     //Log out function that removes the token from the session storage

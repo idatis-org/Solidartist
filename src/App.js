@@ -9,7 +9,13 @@ import Login from 'pages/Login'
 import Home from 'pages/Home'
 import Profile from 'pages/Profile'
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import useUser from 'hooks/useUser';
+
 function App() {
+  const { token } = useUser();
+
   return (
     <div className="App">
       <UserContextProvider>

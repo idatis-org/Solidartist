@@ -1,12 +1,12 @@
 import GalleryArtist from 'components/GalleryArtist';
 import GalleryBuyer from 'components/GalleryBuyer';
-import Context from 'context/UserContext';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getProfile } from 'services/userService';
+import useUser from 'hooks/useUser';
 
 export default function Profile({ alias }) {
     const [userData, setUserData] = useState([])
-    const { userInfo } = useContext(Context)
+    const { userInfo } = useUser()
 
     useEffect(() => {
         getProfile(alias)
@@ -14,12 +14,10 @@ export default function Profile({ alias }) {
             .catch(err => console.log(err))
     }, [alias])
 
-    console.log(userData)
-
     return (
         <>
             <p>PROFILE</p>
-            <img src="http://localhost:3030/img/andromeda.jpg" width="300px" alt="profile_photo" />
+            <img src={`http://localhost:3030/img/${userData && userData.user_img}`} width="300px" alt="profile_photo" />
             <h1>Id: {userData.id}</h1>
             <h1>Username: {userData.username}</h1>
             <h1>Alias: {userData.alias}</h1>

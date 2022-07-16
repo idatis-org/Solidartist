@@ -7,7 +7,6 @@ export default function Header() {
     const { isLogged, logout, userInfo } = useUser()
 
     const handleLogout = e => {
-        e.preventDefault()
         logout()
     }
 
@@ -37,7 +36,7 @@ export default function Header() {
                     </Link>
                 </li>
                 <li>
-                    <Link className="navbar-link" to="#" onClick={handleLogout}>
+                    <Link to="/" className="navbar-link" onClick={handleLogout}>
                         Log out
                     </Link>
                 </li>
