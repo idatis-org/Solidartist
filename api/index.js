@@ -21,5 +21,5 @@ app.use("/imgArt", express.static('artUploads'));
 app.use('/api/user', userController);
 app.use('/api/art', artController);
 
-const port = 3030
+const port = 3306
 app.listen(port, () => console.log(`Express en puerto ${port}!`))
