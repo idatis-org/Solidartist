@@ -19,6 +19,11 @@ export default function Header() {
         return !isLogged ?
             <>
                 <li>
+                    <Link className="navbar-link" to="/artists">
+                        Artists
+                    </Link>
+                </li>
+                <li>
                     <Link className="navbar-link" to="/login">
                         Login
                     </Link>
@@ -30,6 +35,11 @@ export default function Header() {
                 </li>
             </>
             : <>
+                <li>
+                    <Link className="navbar-link" to="/artists">
+                        Artists
+                    </Link>
+                </li>
                 <li>
                     <Link className="navbar-link" to={`/user/${userInfo && userInfo.alias}`} onClick={handleProfile}>
                         Profile

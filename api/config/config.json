@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "dbu2492050",
-    "password": "Solidar.Tist-22_@2.20",
-    "database": "dbs7834446",
-    "host": "db5009248578.hosting-data.io",
+    "username": "root",
+    "password": "",
+    "database": "solidartist",
+    "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {

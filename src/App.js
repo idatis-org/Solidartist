@@ -12,6 +12,7 @@ import Profile from 'pages/Profile'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import useUser from 'hooks/useUser';
+import Artists from 'pages/Artists';
 
 function App() {
   const { token } = useUser();
@@ -41,6 +42,10 @@ function App() {
             <Route
               path="/user/:alias"
               element={<Profile />}
+            />
+            <Route
+              path="/artists"
+              element={<Artists />}
             />
           </Routes>
         </BrowserRouter>

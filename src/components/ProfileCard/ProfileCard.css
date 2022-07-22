@@ -1,0 +1,11 @@
+.profile-card-container {
+    border-radius: 10%;
+    border: 1px solid black;
+    width: fit-content;
+    padding: 1em;
+    margin: 1em;
+}
+
+.profile-img-container {}
+
+.profile-body-container {}
