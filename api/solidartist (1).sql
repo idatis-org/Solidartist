@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Temps de generació: 16-07-2022 a les 11:07:35
+-- Temps de generació: 28-07-2022 a les 19:01:19
 -- Versió del servidor: 10.4.24-MariaDB
 -- Versió de PHP: 8.1.6
 
@@ -57,7 +57,9 @@ INSERT INTO `art_piece` (`id`, `content`, `title`, `piece_type`, `front_page`, `
 (19, '1657819615692-free-music-128bpm-62830.mp3', 'asdasd', 'audio', '1657819615706-mobile_png.png', 'adasd', 45, '2022-07-14 17:26:55'),
 (20, '1657821561917-mobile_png.png', '', 'image', NULL, '', 0, '2022-07-14 17:59:21'),
 (21, '1657821616239-pexels-mareefe-932577.jpg', '', 'image', NULL, '', 0, '2022-07-14 18:00:16'),
-(22, '1657821735115-pexels-caio-46274.jpg', '', 'image', NULL, '', 0, '2022-07-14 18:02:15');
+(22, '1657821735115-pexels-caio-46274.jpg', '', 'image', NULL, '', 0, '2022-07-14 18:02:15'),
+(23, '1657967712225-mobile_png.png', '', 'image', NULL, '', 0, '2022-07-16 10:35:12'),
+(27, '1657968334238-pexels-pixabay-39866.jpg', 'dd', 'image', NULL, 'dd', 3, '2022-07-16 10:45:34');
 
 -- --------------------------------------------------------
 
@@ -102,7 +104,8 @@ INSERT INTO `categories_pieces` (`id`, `id_category`, `id_piece`) VALUES
 (6, 1, 7),
 (7, 2, 8),
 (8, 1, 9),
-(18, 1, 19);
+(18, 1, 19),
+(25, 1, 27);
 
 -- --------------------------------------------------------
 
@@ -113,7 +116,8 @@ INSERT INTO `categories_pieces` (`id`, `id_category`, `id_piece`) VALUES
 CREATE TABLE `collections` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `description` text NOT NULL
+  `description` text NOT NULL,
+  `id_user` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -201,7 +205,8 @@ INSERT INTO `users_pieces` (`id`, `id_creator`, `id_current_owner`, `id_piece`) 
 (18, 11, 11, 19),
 (19, 11, 11, 20),
 (20, 11, 11, 21),
-(21, 11, 11, 22);
+(21, 11, 11, 22),
+(25, 11, 11, 27);
 
 --
 -- Índexs per a les taules bolcades
@@ -231,7 +236,8 @@ ALTER TABLE `categories_pieces`
 -- Índexs per a la taula `collections`
 --
 ALTER TABLE `collections`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_id_user` (`id_user`);
 
 --
 -- Índexs per a la taula `collections_pieces`
@@ -271,7 +277,7 @@ ALTER TABLE `users_pieces`
 -- AUTO_INCREMENT per la taula `art_piece`
 --
 ALTER TABLE `art_piece`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT per la taula `categories`
@@ -283,7 +289,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT per la taula `categories_pieces`
 --
 ALTER TABLE `categories_pieces`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT per la taula `collections`
@@ -313,7 +319,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT per la taula `users_pieces`
 --
 ALTER TABLE `users_pieces`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- Restriccions per a les taules bolcades
@@ -325,6 +331,12 @@ ALTER TABLE `users_pieces`
 ALTER TABLE `categories_pieces`
   ADD CONSTRAINT `fk_categoies_pieces_Id_Piece` FOREIGN KEY (`id_piece`) REFERENCES `art_piece` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_catgories_pieces_Id_Category` FOREIGN KEY (`id_category`) REFERENCES `categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Restriccions per a la taula `collections`
+--
+ALTER TABLE `collections`
+  ADD CONSTRAINT `fk_id_user` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Restriccions per a la taula `complaints`
