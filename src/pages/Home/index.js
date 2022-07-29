@@ -11,7 +11,7 @@ export default function Home() {
 
     return (
         <>
-            HOME
+            HOME.
             <button onClick={goToProfile}>Go to TEST profile</button>
         </>
     );
