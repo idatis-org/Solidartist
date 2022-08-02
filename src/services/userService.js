@@ -40,9 +40,35 @@ function editProfile(body) {
         .then(res => (res.data))
 }
 
+function createCollection(body) {
+    return fetch(`${API_URL}/user/createCollection`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    })
+        .then(res => {
+            if (!res.ok) throw new Error(res.error);
+            return res.json()
+        })
+        .then(res => (res.data))
+}
+
+function getCollections(id) {
+    return fetch(`${API_URL}/user/getCollections/${id}`)
+        .then(res => {
+            if (!res.ok) throw new Error(res.error);
+            return res.json()
+        })
+        .then(res => (res.data))
+}
+
 export {
     getProfile,
     getCreatorArt,
     getOwnerArt,
-    editProfile
+    editProfile,
+    createCollection,
+    getCollections
 }

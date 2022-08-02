@@ -5,10 +5,12 @@ import { Form, Button } from 'react-bootstrap';
 import useForm from './hook'
 import { editProfile } from 'services/userService';
 import UploadArt from 'components/UploadArt';
+import Collection from 'components/Collection';
 
 export default function Dashboard() {
     const { userInfo } = useUser()
     const [show, setShow] = useState(false);
+    const [showCollection, setShowCollection] = useState(false);
 
     //Initial states of the reducer
     const initialProfilePhoto = userInfo && userInfo.user_img;
@@ -83,6 +85,8 @@ export default function Dashboard() {
                         <>
                             <Button onClick={() => setShow(true)}>Subir obra</Button>
                             <UploadArt show={show} onHide={() => setShow(false)} idUser={userInfo.id} />
+                            <Button onClick={() => setShowCollection(true)}>Crear colección</Button>
+                            <Collection show={showCollection} onHide={() => setShowCollection(false)} idUser={userInfo.id}></Collection>
                         </>
                         :
                         userInfo.role === 2 ?

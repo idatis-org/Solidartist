@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap'
 import { getAllCategories, newArt } from 'services/artService'
+import { getCollections } from 'services/userService';
 import useFormArt from './hook'
 
 const isImage = (file) => {
@@ -27,6 +28,7 @@ function checkType(file) {
 
 export default function UploadArt({ show, onHide, idUser }) {
     const [categories, setCategories] = useState([])
+    const [collections, setCollections] = useState([])
     const [artUploaded, setArtUploaded] = useState(false)
     const [uploadMsg, setUploadMsg] = useState('')
     const formInfo = useFormArt()
@@ -60,10 +62,14 @@ export default function UploadArt({ show, onHide, idUser }) {
         formInfo.updatePieceType(checkType(evt.target.files[0]))
     }, [formInfo])
 
+    const handleCollection = useCallback((evt) => {
+        formInfo.updateCollection(evt.target.value)
+    }, [formInfo])
+
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        //Validate
+        //TODO: Validate
         //Category is not 0, etc
 
         const data = new FormData();
@@ -90,6 +96,12 @@ export default function UploadArt({ show, onHide, idUser }) {
             .then(setCategories)
             .catch(err => console.log(err))
     }, [])
+
+    useEffect(() => {
+        getCollections(idUser)
+            .then(setCollections)
+            .catch(err => console.log(err))
+    }, [idUser])
 
     return (
         <>
@@ -150,6 +162,19 @@ export default function UploadArt({ show, onHide, idUser }) {
                                                     categories && categories.map((cat, idx) => (
                                                         <>
                                                             <option value={cat.id} key={cat.id}>{cat.title}</option>
+                                                        </>
+                                                    ))
+                                                }
+                                            </Form.Select>
+                                        </Form.Group>
+                                        <Form.Group controlId="formArtCollections">
+                                            <Form.Label>Colecciones</Form.Label>
+                                            <Form.Select aria-label="Default select example" onChange={handleCollection}>
+                                                <option value="0" key="0">Selecciona la Coleccion</option>
+                                                {
+                                                    collections && collections.map((col, idx) => (
+                                                        <>
+                                                            <option value={col.id} key={col.id}>{col.name}</option>
                                                         </>
                                                     ))
                                                 }
