@@ -19,7 +19,10 @@ export default function GalleryArtist({ id }) {
                         <div key={idx} className="gallery-piece-container">
                             <h1>{piece.title}</h1>
                             <div>
-                                {piece.content}
+                                {
+                                    piece.piece_type === "image" ? <img src={`http://localhost:3030/imgArt/${piece && piece.content}`} width="200px" height="200px" alt="NFT" />
+                                        : piece.content
+                                }
                             </div>
                         </div>
                     ))
