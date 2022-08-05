@@ -49,7 +49,7 @@ function App() {
               element={<Artists />}
             />
              <Route
-              path="/artDetail"
+              path="/artDetail/:id"
               element={<Art_Detail />}
             />
           </Routes>

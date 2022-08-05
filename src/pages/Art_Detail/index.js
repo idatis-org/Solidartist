@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from "react-router-dom";
 import "./Art_Detail.css"
 
-export default function Art_Detail(creator, owner, title, description, price, category, colection) {
-
+export default function Art_Detail() {
+    let { id } = useParams();
+  
 
     return (
         <div className=''>
+            <div> ID del producto es {id}</div>
             <div>creator</div>
             <div>owner</div>
             <div>title</div>
@@ -13,7 +16,7 @@ export default function Art_Detail(creator, owner, title, description, price, ca
             <div>price</div>
             <div>category</div>
             <div>colection</div>
-            <button>Comprar</button>
+            <button className=''>Comprar</button>
         </div>
     )
 }
