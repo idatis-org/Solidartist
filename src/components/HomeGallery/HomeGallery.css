@@ -1,0 +1,18 @@
+.gallery-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.gallery-piece-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-width: 0.1em;
+    border-color: rgba(145, 145, 145, 0.8);
+    border-style: solid;
+    padding: 0.6em;
+    margin: 2em 1em !important;
+    flex: 1 0 25%;
+    height: 100px;
+}

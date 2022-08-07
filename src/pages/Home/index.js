@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import HomeGallery from 'components/HomeGallery';
 
 export default function Home() {
     const navigate = useNavigate()
@@ -16,7 +17,7 @@ export default function Home() {
         <>
             HOME.
             <button onClick={goToProfile}>Go to TEST profile</button>
-            
+            <HomeGallery></HomeGallery>
            {/*Borrar esto y agregar la galeria y pasar la funcion goToDetail 
            a las cards reemplazando el value por el ID*/}
            <br></br>
