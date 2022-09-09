@@ -1,0 +1,14 @@
+.homeGallery-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.homeGallery-piece-container {
+    border-radius: 10%;
+    border: 1px solid black;
+    width: fit-content;
+    padding: 1em;
+    margin: 5px 5px;
+    width: 20em;
+}
