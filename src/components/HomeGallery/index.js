@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './HomeGallery.css';
-import { getAllArt } from 'services/artService';
+import { getAllArt, getCurrentOwner } from 'services/artService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMusic } from '@fortawesome/free-solid-svg-icons';
-import { faImage } from '@fortawesome/free-solid-svg-icons';
-import { faHeadphones } from '@fortawesome/free-solid-svg-icons';
-import { faCamera } from '@fortawesome/free-solid-svg-icons';
-import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faMusic, faImage, faHeadphones, faCamera, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 
-const renderIconSwitch = (iconType) => {
+const iconSwitch = (iconType) => {
     switch(iconType) {
         case 'audio':
             return <FontAwesomeIcon icon={faHeadphones}/>;
@@ -21,10 +18,16 @@ const renderIconSwitch = (iconType) => {
         default:
             return <FontAwesomeIcon icon={faCircleExclamation}/>;
     }
-};
+}
 
 export default function HomeGallery() {
 
+    const navigate = useNavigate()
+    const goToDetail = (e) => {
+        navigate("/artDetail/" + e.currentTarget.value)
+    }
+
+    // Art_pieces Table
     const [artPiece, setArtPiece] = useState([])
     useEffect(() => {
         getAllArt()
@@ -32,30 +35,57 @@ export default function HomeGallery() {
             .catch(err => console.log(err))
     }, []);
 
-    console.log('PRUEBA')
+    // Users_pieces Table
+    const [currentOwner, setCurrentOwner] = useState([])
+    useEffect(() => {
+        getCurrentOwner()
+            .then(setCurrentOwner)
+            .catch(err => console.log(err))
+    }, []);
 
     return (
         <>
             <h1>Home gallery</h1>
-            <div className='gallery-container'>
+            <div className='homeGallery-container'>
                 {
                     artPiece.slice().reverse().map((piece, idx) => (
-                        <div key={idx} className="gallery-piece-container">
-                            <h1>{piece.title}</h1>
-                            <div>
-                            {piece.content}
-                                {
-                                    piece.piece_type === "image" ? <img src={`http://localhost:3030/imgArt/${piece && piece.content}`} width="50px" height="50px" alt="NFT" />
-                                        : piece.content
+                        <button key={idx} value={piece.id} onClick={e => goToDetail(e)}>
+                            <div className="homeGallery-piece-container">
+                                <h1>{piece.title}</h1>
+                                <div>Foto obra: 
+                                    {
+                                        piece.piece_type === "image" ? <img src={`http://localhost:3030/imgArt/${piece && piece.content}`} width="50px" height="50px" alt="NFT" />
+                                            : piece.content
+                                    }
+                                </div>
+                                <div>Creator ID:  
+                                    { 
+                                        currentOwner.map((uPiece) => {
+                                            if (piece.id === uPiece.id_piece) 
+                                                return uPiece.id_creator;
+                                        })
+                                    }
+                                </div>
+                                <div>
+                                { 
+                                    currentOwner.map((uPiece) => {
+                                        if (piece.id === uPiece.id_piece) {
+                                            if (uPiece.id_creator === uPiece.id_current_owner) {
+                                                return "Precio: " + piece.sell_price;
+                                            } else {
+                                                return "Precio: N/A. Esta obra de arte ya se ha vendido y no está a la venta";
+                                            }
+                                        }
+                                    }) 
                                 }
+                                </div>
+                                <div>
+                                {
+                                    iconSwitch(piece.piece_type)
+                                }
+                                </div>
                             </div>
-                            <div>
-                                <p>Precio: {piece.sell_price}</p>
-                            </div>
-                            <div>
-                                {renderIconSwitch(piece.piece_type)}
-                            </div>
-                        </div>
+                        </button> 
                     ))
                 }
             </div>

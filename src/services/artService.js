@@ -31,9 +31,18 @@ function getAllArt() {
         .then(res => (res.data))
 }
 
+function getCurrentOwner() {
+    return fetch(`${API_URL}/art/users_pieces/all`)
+        .then(res => {
+            if (!res.ok) throw new Error(res.error);
+            return res.json()
+        })
+        .then(res => (res.data))
+}
 
 export {
     getAllCategories,
     newArt,
     getAllArt,
+    getCurrentOwner
 }
