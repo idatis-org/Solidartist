@@ -4,7 +4,9 @@ import { getAllArt, getCurrentOwner } from 'services/artService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMusic, faImage, faHeadphones, faCamera, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import GetUserById from './GetUserById';
 
+// Icon switch in order to change icons import and replace here
 const iconSwitch = (iconType) => {
     switch(iconType) {
         case 'audio':
@@ -22,12 +24,13 @@ const iconSwitch = (iconType) => {
 
 export default function HomeGallery() {
 
+    // Navigates to the details of the piece
     const navigate = useNavigate()
     const goToDetail = (e) => {
         navigate("/artDetail/" + e.currentTarget.value)
     }
 
-    // Art_pieces Table
+    // Table - Art_pieces - Gets all art pieces
     const [artPiece, setArtPiece] = useState([])
     useEffect(() => {
         getAllArt()
@@ -35,7 +38,7 @@ export default function HomeGallery() {
             .catch(err => console.log(err))
     }, []);
 
-    // Users_pieces Table
+    // Table - Users_pieces - Used to find the current owner of a piece
     const [currentOwner, setCurrentOwner] = useState([])
     useEffect(() => {
         getCurrentOwner()
@@ -43,9 +46,10 @@ export default function HomeGallery() {
             .catch(err => console.log(err))
     }, []);
 
+
     return (
         <>
-            <h1>Home gallery</h1>
+            <h1>Gallery</h1>
             <div className='homeGallery-container'>
                 {
                     artPiece.slice().reverse().map((piece, idx) => (
@@ -55,28 +59,22 @@ export default function HomeGallery() {
                                 <div>Foto obra: 
                                     {
                                         piece.piece_type === "image" ? <img src={`http://localhost:3030/imgArt/${piece && piece.content}`} width="50px" height="50px" alt="NFT" />
-                                            : piece.content
+                                            : <img src={null} alt="piece_photo" />
                                     }
                                 </div>
-                                <div>Creator ID:  
+                                <div>
                                     { 
-                                        currentOwner.map((uPiece) => {
-                                            if (piece.id === uPiece.id_piece) 
-                                                return uPiece.id_creator;
-                                        })
+                                        currentOwner.map((uPiece) =>
+                                            piece.id === uPiece.id_piece ? <GetUserById id={uPiece.id_creator} key={idx}></GetUserById> : null)
                                     }
                                 </div>
                                 <div>
                                 { 
-                                    currentOwner.map((uPiece) => {
-                                        if (piece.id === uPiece.id_piece) {
-                                            if (uPiece.id_creator === uPiece.id_current_owner) {
-                                                return "Precio: " + piece.sell_price;
-                                            } else {
-                                                return "Precio: N/A. Esta obra de arte ya se ha vendido y no está a la venta";
-                                            }
-                                        }
-                                    }) 
+                                    currentOwner.map((uPiece) =>
+                                        piece.id === uPiece.id_piece ? 
+                                            uPiece.id_creator === uPiece.id_current_owner ?  "Precio: " + piece.sell_price 
+                                            : "Precio: N/A. Esta obra de arte ya se ha vendido y no está a la venta" 
+                                        : null)
                                 }
                                 </div>
                                 <div>

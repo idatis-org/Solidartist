@@ -10,6 +10,24 @@ function getProfile(alias) {
         .then(res => (res.data))
 }
 
+function getUserById(id) {
+    return fetch(`${API_URL}/user/find/${id}`)
+        .then(res => {
+            if (!res.ok) throw new Error(res.error);
+            return res.json()
+        })
+        .then(res => (res.data))
+}
+
+function getUserByUsername(username) {
+    return fetch(`${API_URL}/user/${username}`)
+        .then(res => {
+            if (!res.ok) throw new Error(res.error);
+            return res.json()
+        })
+        .then(res => (res.data))
+}
+
 function getCreatorArt(id) {
     return fetch(`${API_URL}/user/art/creator/${id}`)
         .then(res => {
@@ -70,5 +88,7 @@ export {
     getOwnerArt,
     editProfile,
     createCollection,
-    getCollections
+    getCollections,
+    getUserById,
+    getUserByUsername
 }
