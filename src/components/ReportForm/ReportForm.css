@@ -1,0 +1,8 @@
+.border-box-red {
+    border-color: crimson !important;
+}
+
+.texto-obligatorio-form {
+    color: crimson;
+    display: none;
+}
