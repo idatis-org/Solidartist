@@ -52,6 +52,12 @@ export default function PieceDetail({ idPiece }) {
         }
     }, [users])
 
+
+    //Editando 
+    const { userInfo } = useUser()
+    let userId = userInfo.id;
+    //Fin editando
+
     useEffect(() => {
         //GET COLLECTION IT BELONGS
         if (artPiece) {
@@ -124,7 +130,7 @@ export default function PieceDetail({ idPiece }) {
                     </>
                 )
             }
-            <ModalDetail isOpen={isOpen} art={artPiece} toggle={toggleModal}></ModalDetail>
+            <ModalDetail isOpen={isOpen} art={artPiece} toggle={toggleModal} userId={userId}></ModalDetail>
             {isVendidaRender}
         </div>
     );

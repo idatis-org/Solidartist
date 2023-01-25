@@ -76,6 +76,23 @@ function getCategoriesById(id) {
         .then(res => (res.data))
 }
 
+//editando
+function editOwner(body) {
+    return fetch(`${API_URL}/art/edit`, {
+        method: 'POST', //Lo hago con post porque con PUT me daba problemas
+        headers: { //Header para indicar que pasaremos un JSON
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body) //Se convierte en json 
+    })
+        .then(res => {
+            //Se convierte a json la respuesta para poder leerla como objeto despues
+            return res.json();
+        })
+
+}
+//fin editando
+
 export {
     getAllCategories,
     newArt,
@@ -84,5 +101,6 @@ export {
     getPieceById,
     getCollectionById,
     getCategoriesById,
-    getPieceAssociatedUsers
+    getPieceAssociatedUsers,
+    editOwner
 }

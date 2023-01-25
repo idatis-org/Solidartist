@@ -39,7 +39,7 @@ export default function GalleryUser({ id, type }) {
         <>
             <h1>{title}</h1>
             <div className='gallery-container'>
-                {
+                {whoIsArt() &&
                     whoIsArt().map((piece, idx) => (
                         <div key={idx} className="gallery-piece-container" onClick={() => goToProfile(piece.id)}>
                             <h1>{piece.title}</h1>

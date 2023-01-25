@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 // import { web3auth } from 'services/web3Service';
 import { AVALANCHE_MAINNET_PARAMS } from "services/settings.js"
 import { useWeb3ConnectionContext } from "context/Web3ConnectionContext"
+import LoadingSpinner from 'components/LoadingSpinner';
 // import { AVALANCHE_NOT_INSTALLED_ERROR } from 'avalanche';
 
 // Promise.resolve(typeof Crypto !== 'undefined'
@@ -96,10 +97,13 @@ export default function Login() {
             </label>
             <Field type="password" className={errors.password ? 'error' : ''} placeholder='Password' name="password" value={values.password} />
             <ErrorMessage name="password" component="small" className="form-errors" />
-
-            <button type="submit" className="submit-btn" disabled={isSubmitting && !status}>Login</button>
-            <ErrorMessage name="generic" component="small" className="form-errors" />
-            {status && status.databaseError && (<p>{status.databaseError}</p>)}
+            {isLoginLoading ? <LoadingSpinner /> :
+                <>
+                    <button type="submit" className="submit-btn" disabled={isSubmitting && !status}>Login</button>
+                    <ErrorMessage name="generic" component="small" className="form-errors" />
+                    {status && status.databaseError && (<p>{status.databaseError}</p>)}
+                </>
+            }
         </Form>
     )
 
