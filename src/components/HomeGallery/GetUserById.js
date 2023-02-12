@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getUserById } from 'services/userService';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 // AUXILIARY COMPONENT FINDS A USER BY ID AND RETURNS HIS PROFILE PICTURE
 export default function GetUserById({id, idx}) {
@@ -15,7 +16,7 @@ export default function GetUserById({id, idx}) {
         <React.Fragment key={idx}>
             Foto perfil: 
             {userData.user_img === null ? <img src={process.env.PUBLIC_URL + '/defaultUserPicture.jpg'} width="50px" height="50px"/>
-                : <img src={`https://pruebas-api.solidartist.org/img/${userData && userData.user_img}`} width="50px" alt="profile_photo" />
+                : <LazyLoadImage src={`https://pruebas-api.solidartist.org/img/${userData && userData.user_img}`} width="50px" alt="profile_photo" loading="lazy"/>
             }          
         </React.Fragment>
     )

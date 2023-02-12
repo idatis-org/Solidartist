@@ -8,7 +8,7 @@ import UploadArt from 'components/UploadArt';
 import Collection from 'components/Collection';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-
+import Compressor from 'compressorjs';
 
 
 function toastSuccess(msg) {
@@ -48,9 +48,18 @@ export default function Dashboard() {
         updatePrivacity } = useForm(initialProfilePhoto, initialWallPhoto, initialDesc, initialPriv)
 
     //Call of dispatch methods defined in the hook to update the states
+
     const handleProfilePhoto = useCallback((evt) => {
-        updateProfilePhoto(evt.target.files[0])
-    }, [updateProfilePhoto])
+        const image = evt.target.files[0];
+        new Compressor(image, {
+            quality: 0.95,
+            //maxWidth: 1200,
+            //maxHeight: 2160,
+            success(result) {
+                updateProfilePhoto(result)
+            },
+        });
+    }, [updateProfilePhoto]);
 
     const handleWallPhoto = useCallback((evt) => {
         updateWallPhoto(evt.target.files[0])
@@ -88,6 +97,10 @@ export default function Dashboard() {
             })
     }
 
+    const goToUserDetail = () =>{
+        navigate('/' + userInfo.alias, { replace: true })
+    }
+
     return (
         <>
             <h1>Dashboard</h1>
@@ -114,6 +127,7 @@ export default function Dashboard() {
                             <UploadArt show={show} onHide={() => setShow(false)} idUser={userInfo.id} toast={toastSuccess} />
                             <Button onClick={() => setShowCollection(true)}>Crear colección</Button>
                             <Collection show={showCollection} onHide={() => setShowCollection(false)} idUser={userInfo.id} toast={toastSuccess}></Collection>
+
                         </>
                         :
                         userInfo.role === 2 ?
@@ -130,6 +144,7 @@ export default function Dashboard() {
                             null
                 }
                 <Button onClick={(e) => handleSubmit(e)}>Submit</Button>
+                <Button onClick={() => goToUserDetail()}>Mis Obras</Button>
             </Form>
         </>
     )

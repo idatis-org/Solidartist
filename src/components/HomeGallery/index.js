@@ -6,6 +6,7 @@ import { faMusic, faImage, faHeadphones, faCamera, faCircleExclamation } from '@
 import { useNavigate } from 'react-router-dom';
 import GetUserById from './GetUserById';
 import LoadingSpinner from 'components/LoadingSpinner';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 // Icon switch in order to change icons import and replace here
 const iconSwitch = (iconType) => {
@@ -63,7 +64,7 @@ export default function HomeGallery() {
                                     <h1>{piece.title}</h1>
                                     <div>Foto obra:
                                         {
-                                            piece.piece_type === "image" ? <img src={`https://pruebas-api.solidartist.org/imgArt/${piece && piece.content}`} width="50px" height="50px" alt="NFT" />
+                                            piece.piece_type === "image" ? <LazyLoadImage src={`https://pruebas-api.solidartist.org/imgArt/${piece && piece.content}`} width="50px" height="50px" alt="NFT" loading="lazy"/>
                                                 : <img src={process.env.PUBLIC_URL + '/defaultArtPicture.jpg'} width="50px" height="50px" />
                                         }
                                     </div>
