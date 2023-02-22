@@ -66,7 +66,6 @@ export default function UploadArt({ show, onHide, idUser, toast }) {
     const formInfo = useFormArt()
     const { validateForms, eraseError } = useValidateFields();
 
-    console.log("Ha entrat fuck")
     const handleArtContent = useCallback((evt) => {
         formInfo.updateArtContent(evt.target.files[0])
     }, [formInfo])

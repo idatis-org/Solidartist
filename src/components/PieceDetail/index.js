@@ -12,16 +12,20 @@ export default function PieceDetail({ idPiece }) {
     const [users, setUsers] = useState(null);
     const [owner, setOwner] = useState(null);
     const [creator, setCreator] = useState(null);
+    const [forceUpdate, setForceUpdate] = useState(false);
 
+
+    
+    
     //Confirmation Modal
     const [isOpen, setIsOpen] = useState(false);
-
+    
     function toggleModal() {
         setIsOpen(!isOpen);
     }
 
     const { isLogged } = useUser();
-
+    
     //Service Calls
     useEffect(() => {
         getPieceById(idPiece)
@@ -30,32 +34,36 @@ export default function PieceDetail({ idPiece }) {
 
         // GET OWNER AND CREATOR
         getPieceAssociatedUsers(idPiece)
-            .then(setUsers)
+        .then(setUsers)
             .catch(err => console.log(err));
 
         //GET CATEGORY IT BELONGS
         getCategoriesById(idPiece)
             .then(setCategoriesPiece)
             .catch(err => console.log(err));
-    }, []);
+
+        console.log("useEffect is called:  Service Calls");
+    }, [forceUpdate]);
 
     useEffect(() => {
         //GET COLLECTION IT BELONGS
         if (users) {
             getUserById(users.id_creator)
-                .then(setCreator)
-                .catch(err => console.log(err));
-
+            .then(setCreator)
+            .catch(err => console.log(err));
+            
             getUserById(users.id_current_owner)
-                .then(setOwner)
-                .catch(err => console.log(err));
+            .then(setOwner)
+            .catch(err => console.log(err));
         }
-    }, [users])
-
-
+        console.log("useEffect is called:  GET COLLECTION IT BELONGS");
+    }, [users, forceUpdate])
+    
+    
     //Editando 
     const { userInfo } = useUser()
-    let userId = userInfo.id;
+    const userId = userInfo.id;
+    const username = userInfo.username;
     //Fin editando
 
     useEffect(() => {
@@ -65,11 +73,13 @@ export default function PieceDetail({ idPiece }) {
                 .then(setCollection)
                 .catch(err => console.log(err));
         }
-    }, [artPiece])
+        console.log("useEffect is called:  GET COLLECTION IT BELONGS");
+    }, [artPiece, forceUpdate])
 
     useEffect(() => {
         retrieveOwner();
-    }, [owner])
+        console.log("useEffect is called:  retrieveOwner");
+    }, [owner, forceUpdate])
 
     function retrieveOwner() {
         if (owner && owner.profile_type === true) {
@@ -81,28 +91,36 @@ export default function PieceDetail({ idPiece }) {
     const goToLogin = () => {
         navigate("/login");
     }
+    const newOwner = () =>{
+        setForceUpdate(!forceUpdate);
+        console.log(forceUpdate);
+    }
 
 
     if (artPiece && owner && creator && owner.username !== creator.username) {
         artPiece.sell_price = "Obra vendida";
 
     }
+    const isMyArt = (artPiece && owner && owner.username !== username);
 
     const isVendida = () => {
         let btn;
-        if (artPiece && artPiece.sell_price !== "Obra vendida") {
+
+        if (artPiece && artPiece.sell_price !== "Obra vendida" && isMyArt) {
             isLogged ?
-                btn = <button value={idPiece} onClick={e => toggleModal()}>Comprar</button>
+            btn = <button value={idPiece} onClick={e => toggleModal()}>Comprar</button>
                 :
                 btn = <button value={idPiece} onClick={e => goToLogin(e)}>Comprar(Login)</button>
-        } else {
-            btn = <button disabled>Vendida</button>
+            } else {
+                isMyArt ?
+                btn = <button disabled>Vendida</button>
+                :
+                btn = <button disabled>Propia</button>
+            }
+            return btn;
         }
-
-        return btn;
-    }
-
-    const isVendidaRender = isVendida();
+        
+        const isVendidaRender = isVendida();
 
     return (
         <div className=''>
@@ -130,7 +148,7 @@ export default function PieceDetail({ idPiece }) {
                     </>
                 )
             }
-            <ModalDetail isOpen={isOpen} art={artPiece} toggle={toggleModal} userId={userId}></ModalDetail>
+            <ModalDetail isOpen={isOpen} art={artPiece} toggle={toggleModal} owner={retrieveOwner} userId={userId} newOwner={newOwner}></ModalDetail>
             {isVendidaRender}
         </div>
     );

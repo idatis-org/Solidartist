@@ -17,7 +17,7 @@ const reducer = (state, action) => {
 }
 
 //Uses useReducer to manage all the states of the searchForm component
-const useFormOwner = (initialOwn, initialPriv) => {
+const useFormOwner = (initialOwn) => {
 
     //State are the states of the searchForm component, and dispatch is the method to update them , similar to useState
     //The reducer is the function that depending wich action we send , it will update one state or another
@@ -27,7 +27,7 @@ const useFormOwner = (initialOwn, initialPriv) => {
 
     return {
         ...state,
-        updateDescription: owner =>
+        updateOwner: owner =>
             dispatch({ type: ACTIONS.UPDATE_OWNER, payload: owner }),
     }
 }

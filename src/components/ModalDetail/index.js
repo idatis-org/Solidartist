@@ -1,19 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Modal from "react-modal";
 //
 import { toast } from 'react-toastify';
 import { editOwner } from "services/artService";
 import { useNavigate } from 'react-router-dom'
-//import useFormOwner from './hook' 
+
 //
 
 Modal.setAppElement("#root");
 
-export default function ModalDetail({ art, isOpen, toggle, userId }) {
+export default function ModalDetail({ art, isOpen, toggle, userId, owner, newOwner }) {
     //
-    //editando
     //He quitado el idPiece que le pasabas, ya que el objeto art, al ser la pieza de arte ya contiene 
     //el id por lo que popdemos recuperarlo de alli con art.id
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
     const navigate = useNavigate();
     const handleConfirm = (e) => {
         e.preventDefault()
@@ -28,12 +28,14 @@ export default function ModalDetail({ art, isOpen, toggle, userId }) {
             idUser: userId
         }
 
-        console.log(`El id de la pieza es: ${art.id}, el id del usuario comprador es: ${userId}`)
-
+        // console.log(`El id de la pieza es: ${art.id}, el id del usuario comprador es: ${userId}`)
+        setIsButtonDisabled(true);
         editOwner(data)
             .then(res => {
                 if (res.ok) { //Si la respuesta es satisfactoria(Ha comprado la obra)
                     toastSuccess("¡Se ha realizado la compra de la obra!");
+                    newOwner();
+                //  owner();
                     setTimeout(() => {
                         toggle(); //Cierra el modal
                     }, 1000);
@@ -42,11 +44,12 @@ export default function ModalDetail({ art, isOpen, toggle, userId }) {
                     toastError(res.data);
                     setTimeout(() => {
                         toggle();
+                        setIsButtonDisabled(false);
                     }, 1000);
                 }
-                window.location.reload()
+                navigate('/artDetail/' + art.id);
+                // window.location.reload()
             })
-        //fin editando
     }
 
 
@@ -69,15 +72,13 @@ export default function ModalDetail({ art, isOpen, toggle, userId }) {
                         </>
                     )
                 }
-                <button onClick={(e) => handleConfirm(e)}>Confirmar</button>
+                <button disabled={isButtonDisabled} onClick={(e) => handleConfirm(e)}>Confirmar</button>
             </Modal>
         </div>
     );
 }
 
 
-//<button onClick={toggle}>Confirmar</button>
-//Editando
 function toastSuccess(msg) {
     toast.success(msg, {
         position: "top-right",
@@ -101,4 +102,3 @@ function toastError(msg) {
         progress: undefined,
     })
 };
-//fin Editando
