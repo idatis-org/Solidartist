@@ -129,10 +129,10 @@ export default function UploadArt({ show, onHide, idUser, toast }) {
         console.log('uploaded image size  ' + formInfo.artContent.size);
 
         new Compressor(formInfo.artContent, {
-          quality: 0.85,
+          quality: 0.95,
           maxWidth: 'auto',
           maxHeight: 2160,
-          convertSize: 220000, // 220KB
+          convertSize: 250000, // 220KB
 
           success(result) {
             console.log('saved image size  ' + result.size);

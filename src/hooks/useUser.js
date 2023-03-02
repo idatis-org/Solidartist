@@ -10,9 +10,10 @@ export default function useUser() {
     const { token, setToken, userInfo, getInfoProfile } = useContext(UserContext);
     const [state, setState] = useState({ loading: false, error: false })
 
-    const login = useCallback(({ username, password }, setStatus) => {
+    const login = useCallback((credentials, setStatus) => {
+        const { username, password } = credentials; // extraer username y password del objeto
         setState({ loading: true, error: false })
-        LoginService({ username, password })
+        LoginService(username, password) // pasarlos como argumentos separados
             .then(jwt => {
                 window.sessionStorage.setItem('token', jwt);
                 setToken(jwt)
@@ -22,7 +23,8 @@ export default function useUser() {
             .catch(error => {
                 window.sessionStorage.removeItem('token');
                 console.log("Error catch login: " + error);
-                setStatus({ databaseError: 'Revisa los campos e intentalo de nuevo' })
+                const errorMessage = error.message;
+                setStatus({ databaseError: errorMessage })
                 setState({ loading: false, error: true })
             })
 
