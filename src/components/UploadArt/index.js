@@ -127,46 +127,77 @@ export default function UploadArt({ show, onHide, idUser, toast }) {
       console.log(formInfo.category);
       if (formInfo.category == 1) {
         console.log('uploaded image size  ' + formInfo.artContent.size);
+        if (formInfo.artContent.size > 250000) {
+          // agrega el if para verificar el tamaño de la imagen, si es menor a 250kb no esta comprimida
+          new Compressor(formInfo.artContent, {
+            quality: 0.95,
+            maxWidth: 'auto',
+            maxHeight: 2160,
+            convertSize: 250000, // 250KB
 
-        new Compressor(formInfo.artContent, {
-          quality: 0.95,
-          maxWidth: 'auto',
-          maxHeight: 2160,
-          convertSize: 250000, // 220KB
-
-          success(result) {
-            console.log('saved image size  ' + result.size);
-            data.append('files', result);
-            data.append('title', formInfo.title.trim());
-            data.append('description', formInfo.description.trim());
-            data.append('sell_price', formInfo.sellPrice);
-            data.append('piece_type', formInfo.pieceType);
-            data.append('category', formInfo.category);
-            data.append('idUser', idUser);
-            if (formInfo.frontPage) {
-              data.append('files', formInfo.frontPage);
-            }
-            if (formInfo.collection) {
-              data.append('id_collection', formInfo.collection);
-            }
-
-            newArt(data).then((res) => {
-              setUploadMsg(res.data);
-              if (res.ok) {
-                console.log(res.data);
-                setArtUploaded(true);
-                onHide();
-                toast('¡Obra subida correctamente!');
-                formInfo.resetForm();
-              } else {
-                console.log('not saved');
+            success(result) {
+              console.log('saved image size  ' + result.size);
+              data.append('files', result);
+              data.append('title', formInfo.title.trim());
+              data.append('description', formInfo.description.trim());
+              data.append('sell_price', formInfo.sellPrice);
+              data.append('piece_type', formInfo.pieceType);
+              data.append('category', formInfo.category);
+              data.append('idUser', idUser);
+              if (formInfo.frontPage) {
+                data.append('files', formInfo.frontPage);
               }
-            });
-          },
-          error(err) {
-            console.log(err.message);
-          },
-        });
+              if (formInfo.collection) {
+                data.append('id_collection', formInfo.collection);
+              }
+
+              newArt(data).then((res) => {
+                setUploadMsg(res.data);
+                if (res.ok) {
+                  console.log(res.data);
+                  setArtUploaded(true);
+                  onHide();
+                  toast('¡Obra subida correctamente!');
+                  formInfo.resetForm();
+                } else {
+                  console.log('not saved');
+                }
+              });
+            },
+            error(err) {
+              console.log(err.message);
+            },
+          });
+        } else {
+          // agregue el else para el caso en que el tamaño de la imagen sea menor o igual a 250kB
+          console.log('image smaller than 250Kb, not compressed');
+          data.append('files', formInfo.artContent);
+          data.append('title', formInfo.title.trim());
+          data.append('description', formInfo.description.trim());
+          data.append('sell_price', formInfo.sellPrice);
+          data.append('piece_type', formInfo.pieceType);
+          data.append('category', formInfo.category);
+          data.append('idUser', idUser);
+          if (formInfo.frontPage) {
+            data.append('files', formInfo.frontPage);
+          }
+          if (formInfo.collection) {
+            data.append('id_collection', formInfo.collection);
+          }
+
+          newArt(data).then((res) => {
+            setUploadMsg(res.data);
+            if (res.ok) {
+              console.log(res.data);
+              setArtUploaded(true);
+              onHide();
+              toast('¡Obra subida correctamente!');
+              formInfo.resetForm();
+            } else {
+              console.log('not saved');
+            }
+          });
+        }
       } else {
         console.log('not Image');
         data.append('files', formInfo.artContent);
@@ -177,9 +208,6 @@ export default function UploadArt({ show, onHide, idUser, toast }) {
         data.append('category', formInfo.category);
         data.append('idUser', idUser);
         if (formInfo.frontPage) {
-          data.append('files', formInfo.frontPage);
-        }
-        if (formInfo.collection) {
           data.append('id_collection', formInfo.collection);
         }
 
