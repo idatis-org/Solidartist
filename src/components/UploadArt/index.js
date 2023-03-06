@@ -5,6 +5,7 @@ import { getCollections } from 'services/userService';
 import useFormArt from './hook';
 import useValidateFields from 'hooks/useValidateFields';
 import Compressor from 'compressorjs';
+import Cropper from 'react-cropper';
 
 const isImage = (file) => {
   if (file.type.match('image/*')) return file;
@@ -239,6 +240,26 @@ export default function UploadArt({ show, onHide, idUser, toast }) {
       .catch((err) => console.log(err));
   }, [idUser, show]);
 
+  const [showCropModal, setShowCropModal] = useState(false);
+  const handleCloseCropModal = () => setShowCropModal(false);
+  const [image, setImage] = useState('');
+  const [cropData, setCropData] = useState('');
+  const [cropper, setCropper] = useState(null);
+  const handleCrop = (e) => {
+    e.preventDefault();
+    let files;
+    if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      files = e.target.files;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImage(reader.result);
+    };
+    reader.readAsDataURL(files[0]);
+    setShowCropModal(true);
+  };
   return (
     <>
       {formInfo && (
@@ -390,6 +411,12 @@ export default function UploadArt({ show, onHide, idUser, toast }) {
                   </small>
                 </Form.Group>
                 <Button
+                  className='btn-primary m-3'
+                  onClick={(e) => handleCrop(e)}
+                >
+                  Crop and Submit
+                </Button>
+                <Button
                   className='btn-success'
                   onClick={(e) => handleSubmit(e)}
                 >
@@ -411,6 +438,60 @@ export default function UploadArt({ show, onHide, idUser, toast }) {
           </Modal.Footer>
         </Modal>
       )}
+      {/* Modal de recorte de imagem */}
+      <Modal show={showCropModal} onHide={handleCloseCropModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Recortar Imagem</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <div className='splitdiv' id='leftdiv'>
+        <h1 className='main-h1'>Upload image</h1>
+        <div id='leftdivcard'>
+          <div className='top_btn'>
+            <div className='input-file-wrapper'>
+              <input
+                type='file'
+                accept='image/*'
+                className='input-file'
+                onChange={onChange}
+              />
+              <label htmlFor='file' className='btn'>
+                Uploads photo
+              </label>
+            </div>
+            <button type='button' id='savebutton' onClick={getCropData}>
+              Save
+            </button>
+          </div>
+          <br />
+          <div className='photo'>
+            <Cropper
+              className='cropper'
+              zoomTo={0.5}
+              initialAspectRatio={1}
+              src={image}
+              viewMode={1}
+              minCropBoxHeight={10}
+              minCropBoxWidth={10}
+              background={false}
+              responsive={true}
+              autoCropArea={1}
+              checkOrientation={false}
+              onInitialized={(instance) => {
+                setCropper(instance);
+              }}
+              guides={true}
+            />
+          </div>
+        </div>
+      </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant='secondary' onClick={handleCloseCropModal}>
+            Fechar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }
