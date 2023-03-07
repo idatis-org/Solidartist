@@ -413,7 +413,7 @@ export default function UploadArt({ show, onHide, idUser, toast }) {
                   className='btn-primary m-3'
                   onClick={(e) => handleCrop(e)}
                 >
-                  delimitar imagem
+                  crop and submit
                 </Button>
                 <Button
                   className='btn-success'
