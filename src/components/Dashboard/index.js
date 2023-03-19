@@ -29,6 +29,7 @@ export default function Dashboard() {
     const { userInfo, updateProfileInfo } = useUser()
     const [show, setShow] = useState(false);
     const [showCollection, setShowCollection] = useState(false);
+    const [modified, setModified]=useState(false);
     const navigate = useNavigate();
 
     //Initial states of the reducer
@@ -50,6 +51,7 @@ export default function Dashboard() {
     //Call of dispatch methods defined in the hook to update the states
 
     const handleProfilePhoto = useCallback((evt) => {
+        setModified(true)
         const image = evt.target.files[0];
         new Compressor(image, {
             quality: 0.95,
@@ -62,10 +64,12 @@ export default function Dashboard() {
     }, [updateProfilePhoto]);
 
     const handleWallPhoto = useCallback((evt) => {
+        setModified(true)
         updateWallPhoto(evt.target.files[0])
     }, [updateWallPhoto])
 
     const handleDescription = useCallback((evt) => {
+        setModified(true)
         updateDescription(evt.target.value)
     }, [updateDescription])
 
@@ -101,21 +105,30 @@ export default function Dashboard() {
         navigate('/' + userInfo.alias, { replace: true })
     }
 
+    const isAvailableSubmit = () => {
+        let btn;
+        if (modified) {
+            btn = <Button onClick={(e) => handleSubmit(e)}>Submit</Button>
+        } else {
+            btn = <Button disabled>Submit</Button>
+        }
+            return btn;
+    }
+    const isAvailableSubmitRender = isAvailableSubmit();
+
     return (
         <>
             <h1>Dashboard</h1>
+            <img src={`https://pruebas-api.solidartist.org/img/${initialProfilePhoto}`} width="200px" height="200px" alt="NFT" />
             <Form encType='multipart/form-data'>
                 <Form.Label htmlFor="upload-photo-profile" className=''>
                     Foto Perfil
                 </Form.Label>
-                <img src={`https://pruebas-api.solidartist.org/img/${initialProfilePhoto}`} width="200px" height="200px" alt="NFT" />
                 <Form.Control type="file" name="fileProfile" id="upload-photo-profile" onChange={(e) => { handleProfilePhoto(e) }} />
-
                 <Form.Label htmlFor="upload-photo-wall" className=''>
                     Foto Muro
                 </Form.Label>
                 <Form.Control type="file" name="fileWall" id="upload-photo-wall" onChange={(e) => { handleWallPhoto(e) }} />
-
                 <Form.Group className="perfilname" controlId="formBasicEmail">
                     <Form.Label>Descripción</Form.Label>
                     <Form.Control type="textarea" placeholder="Description" value={description} onChange={(e) => { handleDescription(e) }} />
@@ -143,7 +156,7 @@ export default function Dashboard() {
                             </> :
                             null
                 }
-                <Button onClick={(e) => handleSubmit(e)}>Submit</Button>
+                {isAvailableSubmitRender}
                 <Button onClick={() => goToUserDetail()}>Mis Obras</Button>
             </Form>
         </>
