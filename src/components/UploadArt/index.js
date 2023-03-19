@@ -231,9 +231,6 @@ export default function UploadArt({ show, onHide, idUser, toast }) {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            {artUploaded ? (
-              <h1>{uploadMsg}</h1>
-            ) : (
               <Form encType='multipart/form-data'>
                 <Form.Label htmlFor='upload-nft' className=''>
                   Subir obra
@@ -368,7 +365,6 @@ export default function UploadArt({ show, onHide, idUser, toast }) {
                   Submit
                 </Button>
               </Form>
-            )}
           </Modal.Body>
           <Modal.Footer>
             <Button
