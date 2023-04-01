@@ -1,10 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { getAllCategories, newArt } from 'services/artService';
 import { getCollections } from 'services/userService';
 import useFormArt from './hook';
 import useValidateFields from 'hooks/useValidateFields';
 import Compressor from 'compressorjs';
+import Cropper from 'react-cropper';
+import 'cropperjs/dist/cropper.css';
+
 
 const isImage = (file) => {
   if (file.type.match('image/*')) return file;
@@ -126,6 +129,7 @@ export default function UploadArt({ show, onHide, idUser, toast }) {
       const data = new FormData();
       console.log(formInfo.category);
       if (formInfo.category == 1) {
+
         console.log('uploaded image size  ' + formInfo.artContent.size);
         if (formInfo.artContent.size > 250000) {
           // agrega el if para verificar el tamaño de la imagen, si es menor a 250kb no esta comprimida
@@ -239,25 +243,14 @@ export default function UploadArt({ show, onHide, idUser, toast }) {
       .catch((err) => console.log(err));
   }, [idUser, show]);
 
+  const image = formInfo.artContent;
   const [showCropModal, setShowCropModal] = useState(false);
   const handleCloseCropModal = () => setShowCropModal(false);
-  const [image, setImage] = useState('');
-  const [cropData, setCropData] = useState('');
-  const [cropper, setCropper] = useState(null);
+  const [cropperImage, setCropperImage] = useState(null);
   const handleCrop = (e) => {
     e.preventDefault();
-    let files;
-    if (e.dataTransfer) {
-      files = e.dataTransfer.files;
-    } else if (e.target) {
-      files = e.target.files;
-    }
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImage(reader.result);
-    };
-    reader.readAsDataURL(files[0]);
-    setShowCropModal(true);
+    const image = formInfo.artContent;
+    setCropperImage(image);
   };
   return (
     <>
@@ -413,13 +406,13 @@ export default function UploadArt({ show, onHide, idUser, toast }) {
                   className='btn-primary m-3'
                   onClick={(e) => handleCrop(e)}
                 >
-                  crop and submit
+                  Recorta la image y salva
                 </Button>
                 <Button
                   className='btn-success'
                   onClick={(e) => handleSubmit(e)}
                 >
-                  Submit
+                  Salva
                 </Button>
               </Form>
             )}
@@ -443,7 +436,24 @@ export default function UploadArt({ show, onHide, idUser, toast }) {
           <Modal.Title>Recortar Imagem</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>Conteúdo do modal de recorte de imagem</p>
+        
+        <Cropper
+              className='cropper'
+              zoomTo={0.5}
+              initialAspectRatio={1}
+              src={image}
+              viewMode={1}
+              minCropBoxHeight={10}
+              minCropBoxWidth={10}
+              background={false}
+              responsive={true}
+              autoCropArea={1}
+              checkOrientation={false}
+              // onInitialized={(instance) => {
+              //   setCropper(instance);
+              // }}
+              guides={true}
+            />
         </Modal.Body>
         <Modal.Footer>
           <Button variant='secondary' onClick={handleCloseCropModal}>
