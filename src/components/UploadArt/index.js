@@ -127,82 +127,74 @@ export default function UploadArt({ show, onHide, idUser, toast }) {
     let validado = validateForm(formInfo, validateForms);
     if (validado) {
       const data = new FormData();
-      console.log(formInfo.category);
-      if (formInfo.category == 1) {
-        console.log('uploaded image size  ' + formInfo.artContent.size);
-        if (formInfo.artContent.size > 250000) {
-          // agrega el if para verificar el tamaño de la imagen, si es menor a 250kb no esta comprimida
-          new Compressor(formInfo.artContent, {
-            quality: 0.95,
-            maxWidth: 'auto',
-            maxHeight: 2160,
-            convertSize: 250000, // 250KB
+      // verifica si es una imagen
+      if (formInfo.category === '1') {
+        console.log('es una imagen');
+        var image = formInfo.artContent;
+        console.log('uploaded image size  ' + image.size);
 
-            success(result) {
-              console.log('saved image size  ' + result.size);
-              data.append('files', result);
-              data.append('title', formInfo.title.trim());
-              data.append('description', formInfo.description.trim());
-              data.append('sell_price', formInfo.sellPrice);
-              data.append('piece_type', formInfo.pieceType);
-              data.append('category', formInfo.category);
-              data.append('idUser', idUser);
-              if (formInfo.frontPage) {
-                data.append('files', formInfo.frontPage);
-              }
-              if (formInfo.collection) {
-                data.append('id_collection', formInfo.collection);
-              }
-
-              newArt(data).then((res) => {
-                setUploadMsg(res.data);
-                if (res.ok) {
-                  console.log(res.data);
-                  setArtUploaded(true);
-                  onHide();
-                  toast('¡Obra subida correctamente!');
-                  formInfo.resetForm();
-                } else {
-                  console.log('not saved');
-                }
-              });
-            },
-            error(err) {
-              console.log(err.message);
-            },
-          });
+        // verifica si el tamaño de la imagen es menor a 250kb no es comprimida
+        if (image.size > 250000) {
+          new Promise((resolve, reject) => {
+            new Compressor(image, {
+              quality: 0.95,
+              maxWidth: 'auto',
+              maxHeight: 2160,
+              convertSize: 250000, // 250KB
+              success(result) {
+                console.log('compressed image, size:', result.size);
+                resolve(result);
+              },
+              error(err) {
+                console.error(err.message);
+                reject(err);
+              },
+            });
+          })
+            .then((compressedImage) => {
+              image = compressedImage;
+              console.log('image compressed, tiene', image.size);
+              // continue com o upload da imagem aqui
+            })
+            .catch((error) => {
+              console.error('erro na compressão:', error);
+            });
         } else {
-          // agregue el else para el caso en que el tamaño de la imagen sea menor o igual a 250kB
-          console.log('image smaller than 250Kb, not compressed');
-          data.append('files', formInfo.artContent);
-          data.append('title', formInfo.title.trim());
-          data.append('description', formInfo.description.trim());
-          data.append('sell_price', formInfo.sellPrice);
-          data.append('piece_type', formInfo.pieceType);
-          data.append('category', formInfo.category);
-          data.append('idUser', idUser);
-          if (formInfo.frontPage) {
-            data.append('files', formInfo.frontPage);
-          }
-          if (formInfo.collection) {
-            data.append('id_collection', formInfo.collection);
-          }
-
-          newArt(data).then((res) => {
-            setUploadMsg(res.data);
-            if (res.ok) {
-              console.log(res.data);
-              setArtUploaded(true);
-              onHide();
-              toast('¡Obra subida correctamente!');
-              formInfo.resetForm();
-            } else {
-              console.log('not saved');
-            }
-          });
+          console.log(
+            'image smaller than 250Kb, not compressed, tiene',
+            image.size
+          );
+          console.log('imagen a subir, size', image.size);
+          console.log('subiendo imagen');
+          // newArt(data).then((res) => {
+          //   setUploadMsg(res.data);
+          //   if (res.ok) {
+          //     console.log(res.data);
+          //     setArtUploaded(true);
+          //     onHide();
+          //     toast('¡Obra subida correctamente!');
+          //     formInfo.resetForm();
+          //   } else {
+          //     console.log('not saved');
+          //   }
+          // });
         }
+        data.append('files', image);
+        data.append('title', formInfo.title.trim());
+        data.append('description', formInfo.description.trim());
+        data.append('sell_price', formInfo.sellPrice);
+        data.append('piece_type', formInfo.pieceType);
+        data.append('category', formInfo.category);
+        data.append('idUser', idUser);
+        if (formInfo.frontPage) {
+          data.append('files', formInfo.frontPage);
+        }
+        if (formInfo.collection) {
+          data.append('id_collection', formInfo.collection);
+        }
+        
       } else {
-        console.log('not Image');
+        console.log('no es una imagen');
         data.append('files', formInfo.artContent);
         data.append('title', formInfo.title.trim());
         data.append('description', formInfo.description.trim());
@@ -213,19 +205,19 @@ export default function UploadArt({ show, onHide, idUser, toast }) {
         if (formInfo.frontPage) {
           data.append('id_collection', formInfo.collection);
         }
-
-        newArt(data).then((res) => {
-          setUploadMsg(res.data);
-          if (res.ok) {
-            console.log(res.data);
-            setArtUploaded(true);
-            onHide();
-            toast('¡Obra subida correctamente!');
-            formInfo.resetForm();
-          } else {
-            console.log('not saved');
-          }
-        });
+        console.log('subiendo archivo');
+        // newArt(data).then((res) => {
+        //   setUploadMsg(res.data);
+        //   if (res.ok) {
+        //     console.log(res.data);
+        //     setArtUploaded(true);
+        //     onHide();
+        //     toast('¡Obra subida correctamente!');
+        //     formInfo.resetForm();
+        //   } else {
+        //     console.log('not saved');
+        //   }
+        // });
       }
     }
   };
@@ -442,11 +434,12 @@ export default function UploadArt({ show, onHide, idUser, toast }) {
       {/* Modal de recorte de imagem */}
       <Modal show={showCropModal} onHide={handleCloseCropModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Recortar Imagem</Modal.Title>
+          <Modal.Title>Delimitar imagen</Modal.Title>
         </Modal.Header>
-        {console.log('artImage', artImage)}
         <Modal.Body>
-          {artImage && (
+          {console.log(artImage)}
+          <img src={artImage} alt='' />
+          {artImage ? (
             <Cropper
               ref={cropperRef}
               src={artImage}
@@ -454,15 +447,17 @@ export default function UploadArt({ show, onHide, idUser, toast }) {
               guides={true}
               viewMode={1}
               className='cropper-container'
-              style={{ height: 400, width: 400 }} // Defina a altura e largura aqui
+              style={{ height: 400, width: 400 }}
             />
+          ) : (
+            <p>No hay imagen para mostrar</p>
           )}
         </Modal.Body>
         <Modal.Footer>
           <Button variant='secondary' onClick={handleCloseCropModal}>
             Cancelar
           </Button>
-          <Button variant='primary' onClick={handleCrop}>
+          <Button variant='primary' onClick={handleCrop} disabled={!artImage}>
             Salvar
           </Button>
         </Modal.Footer>
