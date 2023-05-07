@@ -4,6 +4,8 @@ import { getUserById } from 'services/userService';
 import { useNavigate } from 'react-router-dom';
 import useUser from 'hooks/useUser';
 import ModalDetail from 'components/ModalDetail';
+import ButtonDesplegable from 'components/ButtonDesplegable';
+
 
 export default function PieceDetail({ idPiece }) {
     const [artPiece, setArtPiece] = useState(null)
@@ -14,18 +16,15 @@ export default function PieceDetail({ idPiece }) {
     const [creator, setCreator] = useState(null);
     const [forceUpdate, setForceUpdate] = useState(false);
 
-
-    
-    
     //Confirmation Modal
     const [isOpen, setIsOpen] = useState(false);
-    
+
     function toggleModal() {
         setIsOpen(!isOpen);
     }
 
     const { isLogged } = useUser();
-    
+
     //Service Calls
     useEffect(() => {
         getPieceById(idPiece)
@@ -34,7 +33,7 @@ export default function PieceDetail({ idPiece }) {
 
         // GET OWNER AND CREATOR
         getPieceAssociatedUsers(idPiece)
-        .then(setUsers)
+            .then(setUsers)
             .catch(err => console.log(err));
 
         //GET CATEGORY IT BELONGS
@@ -49,17 +48,17 @@ export default function PieceDetail({ idPiece }) {
         //GET COLLECTION IT BELONGS
         if (users) {
             getUserById(users.id_creator)
-            .then(setCreator)
-            .catch(err => console.log(err));
-            
+                .then(setCreator)
+                .catch(err => console.log(err));
+
             getUserById(users.id_current_owner)
-            .then(setOwner)
-            .catch(err => console.log(err));
+                .then(setOwner)
+                .catch(err => console.log(err));
         }
         console.log("useEffect is called:  GET COLLECTION IT BELONGS");
     }, [users, forceUpdate])
-    
-    
+
+
     //Editando 
     const { userInfo } = useUser()
     const userId = userInfo.id;
@@ -91,7 +90,7 @@ export default function PieceDetail({ idPiece }) {
     const goToLogin = () => {
         navigate("/login");
     }
-    const newOwner = () =>{
+    const newOwner = () => {
         setForceUpdate(!forceUpdate);
         console.log(forceUpdate);
     }
@@ -108,19 +107,28 @@ export default function PieceDetail({ idPiece }) {
 
         if (artPiece && artPiece.sell_price !== "Obra vendida" && isMyArt) {
             isLogged ?
-            btn = <button value={idPiece} onClick={e => toggleModal()}>Comprar</button>
+                btn = <button value={idPiece} onClick={e => toggleModal()}>Comprar</button>
                 :
                 btn = <button value={idPiece} onClick={e => goToLogin(e)}>Comprar(Login)</button>
-            } else {
-                isMyArt ?
+        } else {
+            isMyArt ?
                 btn = <button disabled>Vendida</button>
                 :
                 btn = <button disabled>Propia</button>
-            }
-            return btn;
         }
-        
-        const isVendidaRender = isVendida();
+        return btn;
+    }
+
+    const isVendidaRender = isVendida();
+    
+    /*Funciones para accionar el boton desplegable de opciones*/ 
+    const handleEditClick = () => {
+        console.log('Editar');
+      };
+    
+      const handleDeleteClick = () => {
+        console.log('Borrar');
+      };
 
     return (
         <div className=''>
@@ -133,7 +141,16 @@ export default function PieceDetail({ idPiece }) {
                                 artPiece.piece_type === "image" ? <img src={`https://pruebas-api.solidartist.org/imgArt/${artPiece && artPiece.content}`} width="100px" height="100px" alt="NFT" />
                                     : <img src={process.env.PUBLIC_URL + '/defaultArtPicture.jpg'} width="100px" height="100px" />
                             }
+
+
                         </div>
+                        
+                        <ButtonDesplegable
+                        /*Botton Desplegable borrar y editar obra*/
+                            onEditClick={handleEditClick}
+                            onDeleteClick={handleDeleteClick}
+                        />
+
                         <div>creator: {creator && creator.username}</div>
                         <div>owner: {owner && owner.username}</div>
                         <div>title: {artPiece.title}</div>
