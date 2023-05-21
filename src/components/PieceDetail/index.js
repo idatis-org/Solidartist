@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getPieceById, getCollectionById, getCategoriesById, getPieceAssociatedUsers } from 'services/artService';
+import { getPieceById, getCollectionById, getCategoriesById, getPieceAssociatedUsers, deleteArtById } from 'services/artService';
 import { getUserById } from 'services/userService';
 import { useNavigate } from 'react-router-dom';
 import useUser from 'hooks/useUser';
@@ -127,7 +127,13 @@ export default function PieceDetail({ idPiece }) {
       };
     
       const handleDeleteClick = () => {
-        console.log('Borrar');
+        deleteArtById(idPiece)
+                .then((res) => {
+                    //setUploadMsg(res.data);
+                    if (res.ok) {
+                        console.log(res.data);
+                    }
+                })
       };
 
     return (
@@ -154,7 +160,8 @@ export default function PieceDetail({ idPiece }) {
                         <div>creator: {creator && creator.username}</div>
                         <div>owner: {owner && owner.username}</div>
                         <div>title: {artPiece.title}</div>
-                        <div>description: {artPiece.creation_date ? new Date(artPiece.creation_date).toLocaleDateString() : 'N/A'}</div>
+                        <div>description: {artPiece.description}</div>
+                        <div>creation date: {artPiece.creation_date ? new Date(artPiece.creation_date).toLocaleDateString() : 'N/A'}</div>
                         <div>price: {artPiece.sell_price}</div>
                         <div>category:
                             {categoriesPiece && categoriesPiece.map((cat) => (
