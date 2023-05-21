@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom'
 
 Modal.setAppElement("#root");
 
-export default function ModalDetail({ art, isOpen, toggle, userId, owner, newOwner }) {
+export default function ModalDetail({ art, isOpen, toggle, userId, newOwner }) {
     //
     //He quitado el idPiece que le pasabas, ya que el objeto art, al ser la pieza de arte ya contiene 
     //el id por lo que popdemos recuperarlo de alli con art.id
@@ -18,24 +18,18 @@ export default function ModalDetail({ art, isOpen, toggle, userId, owner, newOwn
     const handleConfirm = (e) => {
         e.preventDefault()
 
-        // const data = new FormData()
-        // data.append("id", art.id)
-        // data.append("idUser", userId)
-
         //Lo he pasado como objeto y despues en el servicio lo he transformado a json
         let data = {
             id: art.id,
             idUser: userId
         }
 
-        // console.log(`El id de la pieza es: ${art.id}, el id del usuario comprador es: ${userId}`)
         setIsButtonDisabled(true);
         editOwner(data)
             .then(res => {
                 if (res.ok) { //Si la respuesta es satisfactoria(Ha comprado la obra)
                     toastSuccess("¡Se ha realizado la compra de la obra!");
                     newOwner();
-                //  owner();
                     setTimeout(() => {
                         toggle(); //Cierra el modal
                     }, 1000);
@@ -48,7 +42,6 @@ export default function ModalDetail({ art, isOpen, toggle, userId, owner, newOwn
                     }, 1000);
                 }
                 navigate('/artDetail/' + art.id);
-                // window.location.reload()
             })
     }
 

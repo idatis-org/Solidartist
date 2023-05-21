@@ -76,7 +76,7 @@ function getCategoriesById(id) {
         .then(res => (res.data))
 }
 
-//editando
+
 function editOwner(body) {
     return fetch(`${API_URL}/art/edit`, {
         method: 'POST', //Lo hago con post porque con PUT me daba problemas
@@ -91,7 +91,19 @@ function editOwner(body) {
         })
 
 }
-//fin editando
+
+
+function deleteArtById(idPiece) {
+    return fetch(`${API_URL}/art/piece/${idPiece}`, {
+        method: 'DELETE'
+      })
+        .then(res => {
+            if (!res.ok) throw new Error(res.statusText);
+            return res.json()
+        })
+        .then(res => (res.data))
+}
+
 
 export {
     getAllCategories,
@@ -102,5 +114,6 @@ export {
     getCollectionById,
     getCategoriesById,
     getPieceAssociatedUsers,
-    editOwner
+    editOwner,
+    deleteArtById
 }
