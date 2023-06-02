@@ -63,6 +63,8 @@ export default function PieceDetail({ idPiece }) {
     const { userInfo } = useUser()
     const userId = userInfo.id;
     const username = userInfo.username;
+    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+    const formattedDate = artPiece && artPiece.creation_date ? new Date(artPiece.creation_date).toLocaleDateString('es-ES', options) : 'N/A';
     //Fin editando
 
     useEffect(() => {
@@ -150,18 +152,20 @@ export default function PieceDetail({ idPiece }) {
 
 
                         </div>
-                        
-                        <ButtonDesplegable
-                        /*Botton Desplegable borrar y editar obra*/
-                            onEditClick={handleEditClick}
-                            onDeleteClick={handleDeleteClick}
-                        />
+                        {isLogged && creator && owner && !isMyArt && (
+                                <ButtonDesplegable
+                                /*Botton Desplegable borrar y editar obra*/
+                                onEditClick={handleEditClick}
+                                onDeleteClick={handleDeleteClick}
+                            />
+                        )}
+
 
                         <div>creator: {creator && creator.username}</div>
                         <div>owner: {owner && owner.username}</div>
                         <div>title: {artPiece.title}</div>
                         <div>description: {artPiece.description}</div>
-                        <div>creation date: {artPiece.creation_date ? new Date(artPiece.creation_date).toLocaleDateString() : 'N/A'}</div>
+                        <div>Creation date: {formattedDate}</div>
                         <div>price: {artPiece.sell_price}</div>
                         <div>category:
                             {categoriesPiece && categoriesPiece.map((cat) => (
