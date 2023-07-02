@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,700;1,100;1,200;1,300;1,400;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;1,100;1,300&display=swap');
+
+h1{
+    color: #000;
+    font-size: 48px;
+    font-family: Kamerik 105;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+
+
+h2.custom {
+    font-size: 23px; /* Tamaño de fuente personalizado */
+    margin-bottom: 10px; /* Agrega un margen inferior de 10px */
+  }
+
+h2{color: #000;
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;}
+
+    .button-class {
+        margin-top: 20px; /* Agrega un margen superior de 20px */
+      }
+
+    .button-class button {
+         font-size: 30px;
+        font-family: Raleway;
+        background-color: transparent; /* Establece el fondo del botón como transparente */
+        border: none; /* Elimina el borde del botón */
+        color: inherit; /* Hereda el color de texto del elemento padre */
+        cursor: pointer; /* Muestra el cursor como un puntero */
+        transition: background-color 0.3s ease; /* Agrega una transición suave para el cambio de color de fondo */
+      }
+      
+      .button-class button:focus {
+        outline: none; /* Elimina el contorno al hacer clic en el botón */
+      }
+      
+    
+      .button-class button.active span {
+        color: #CE9F4A;
+      }
+
+    

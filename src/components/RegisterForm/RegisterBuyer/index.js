@@ -20,9 +20,8 @@ export default function RegisterBuyer() {
 
     return (
         <div className="form-container">
-            <h3>Registro Comprador</h3>
-
-            <Formik
+            <div className='cuadro-container'>
+                <Formik
                 initialValues={initialValues}
                 validate={validateFields}
                 onSubmit={(values, { setFieldError }) => {
@@ -78,7 +77,7 @@ export default function RegisterBuyer() {
                             </div>
 
                             <label>
-                                Tu perfil va a ser:
+                                Tu perfil va a ser: 
                                 <Field type="checkbox" name="toggle" />
                                 {values.toggle ? "Privado" : "Publico"}
                             </label>
@@ -90,6 +89,7 @@ export default function RegisterBuyer() {
                 }
 
             </Formik>
+        </div>
         </div>
     )
 

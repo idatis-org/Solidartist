@@ -9,7 +9,7 @@ export default function RegisterArtist() {
     return (
         <>
             <div className="form-container">
-                <h3>Registro Artista</h3>
+            <div className='cuadro-container'>             
                 <Formik
                     initialValues={initialValues}
                     validate={validateFields}
@@ -29,6 +29,7 @@ export default function RegisterArtist() {
                             })
                     }}
                 >
+                   
 
                     {
                         ({ errors, isSubmitting, values }) => (
@@ -71,6 +72,7 @@ export default function RegisterArtist() {
                     }
 
                 </Formik>
+                </div>
             </div>
         </>
     )

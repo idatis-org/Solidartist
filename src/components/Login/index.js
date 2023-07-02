@@ -6,6 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import { AVALANCHE_MAINNET_PARAMS } from "services/settings.js"
 import { useWeb3ConnectionContext } from "context/Web3ConnectionContext"
 import LoadingSpinner from 'components/LoadingSpinner';
+import './Login.css';
+import 'boxicons';
+
 // import { AVALANCHE_NOT_INSTALLED_ERROR } from 'avalanche';
 
 // Promise.resolve(typeof Crypto !== 'undefined'
@@ -85,7 +88,7 @@ export default function Login() {
     }, [isLogged, isLoginLoading, navigate])
 
     const renderForm = ({ errors, isSubmitting, values, status }) => (
-        <Form className='form'>
+        <Form className='form' >
             <label htmlFor="username">
                 Usuario:
             </label>
@@ -97,13 +100,18 @@ export default function Login() {
             </label>
             <Field type="password" className={errors.password ? 'error' : ''} placeholder='Password' name="password" value={values.password} />
             <ErrorMessage name="password" component="small" className="form-errors" />
+           
             {isLoginLoading ? <LoadingSpinner /> :
+                
+                
                 <>
-                    <button type="submit" className="submit-btn" disabled={isSubmitting && !status}>Login</button>
+                    <button type="submit" className="submit-btn" disabled={isSubmitting && !status}>Registrarse</button>
                     <ErrorMessage name="generic" component="small" className="form-errors" />
                     {status && status.databaseError && (<p>{status.databaseError}</p>)}
                 </>
             }
+
+            
         </Form>
     )
 
@@ -136,7 +144,7 @@ export default function Login() {
     return (
         <>
             <div className='form-login'>
-                <h3>Login</h3>
+                <h3>¡Bienvenido de nuevo!</h3>
                 <Formik
                     initialValues={initialValues}
                     validate={validateFields}

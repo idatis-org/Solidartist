@@ -1,16 +1,73 @@
-.form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,700;1,100;1,200;1,300;1,400;1,600;1,700&display=swap');
+
+
+
+.form-container{
+    display: inline-flex;
+padding-bottom: 0px;
+flex-direction: column;
+align-items: center;
+gap: 20px;
 }
 
-.form-checkbox {
-    width: 30%;
+.form-container {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+width: 691px;
+height: 48px;
+justify-content: center;
+align-items: center;
+gap: 111px;
+flex-shrink: 0;
+color: #333;
+
+
 }
 
-.form-errors {
-    color: red;
-}
+.cuadro-container {
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%, -50%);}
+
+  h3 {
+    text-align: center;
+    font-size: 30px;
+    font-family: Raleway;
+    margin-bottom: 10px;
+    position:relative;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+  }
+
+
+  #checkbox-group-form {
+    font-size: 20px; /* Cambiar el tamaño de fuente del elemento div "Condiciones" */
+  }
+  
+  .form-checkbox label {
+    font-size: 16px; /* Cambiar el tamaño de fuente de las etiquetas de los checkboxes */
+  }
+
+ /* Media query para pantallas más pequeñas */
+@media screen and (max-width: 768px) {
+    .form-container {
+      width: 90%; /* Reducir el ancho para pantallas más pequeñas */
+      height: auto; /* Ajustar la altura según el contenido */
+    }
+  
+    h3 {
+      font-size: 20px; /* Reducir el tamaño de fuente para pantallas más pequeñas */
+    }
+  }
+  
+  /* Media query para pantallas medianas */
+  @media screen and (min-width: 768px) and (max-width: 1024px) {
+    .form-container {
+      width: 50%; /* Reducir el ancho para pantallas medianas */
+    }
+  
+    h3 {
+      font-size: 25px; /* Ajustar el tamaño de fuente para pantallas medianas */
+    }
+  }

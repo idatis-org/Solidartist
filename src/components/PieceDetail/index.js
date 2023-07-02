@@ -122,18 +122,21 @@ export default function PieceDetail({ idPiece }) {
     const isVendidaRender = isVendida();
     
     /*Funciones para accionar el boton desplegable de opciones*/ 
-    const handleEditClick = () => {
-        console.log('Editar');
-      };
-    
-      const handleDeleteClick = () => {
+    const handleDeleteClick = () => {
         deleteArtById(idPiece)
-                .then((res) => {
-                    //setUploadMsg(res.data);
-                    if (res.ok) {
-                        console.log(res.data);
-                    }
-                })
+          .then((res) => {
+            console.log(res);
+            // Recargar la página automaticamente
+            window.location.reload();
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      };
+
+      const handleEditClick = () => {
+        console.log('Editar');
+       
       };
 
     return (

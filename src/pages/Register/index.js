@@ -1,24 +1,41 @@
 import React, { useState } from 'react';
-import RegisterArtist from 'components/RegisterForm/RegisterArtist'
-import RegisterBuyer from 'components/RegisterForm/RegisterBuyer'
+import RegisterArtist from 'components/RegisterForm/RegisterArtist';
+import RegisterBuyer from 'components/RegisterForm/RegisterBuyer';
+import './Register.css';
 
 export default function RegisterPage() {
     const [option, setOption] = useState(false);
 
-    const register = option ?
-        <RegisterBuyer />
-        :
-        <RegisterArtist />
+    const handleButtonClick = (isOption) => {
+        setOption(isOption);
+    };
+
+    const getButtonClassName = (isOption) => {
+        return option === isOption ? 'active' : '';
+    };
+
+    const register = option ? <RegisterBuyer /> : <RegisterArtist />;
 
     return (
         <>
-            <h1>Formulario de registro</h1>
-            <div>
-                {/* This will be like a switch to change between registers */}
-                <button onClick={() => setOption(false)}>Register as an Artist</button>
-                <button onClick={() => setOption(true)}>Register as a Buyer</button>
+            <h1>¡Bienvenido!</h1>
+            <h2 className='custom'>Antes de empezar, quieres registrarte como:</h2>
+            <div className="button-class">
+                <button
+                    className={getButtonClassName(false)}
+                    onClick={() => handleButtonClick(false)}
+                >
+                    <span>Artista</span>
+                </button>
+                <button
+                    className={getButtonClassName(true)}
+                    onClick={() => handleButtonClick(true)}
+                >
+                    <span>Comprador</span>
+                </button>
             </div>
             {register}
         </>
-    )
+    );
 }
+

@@ -95,15 +95,17 @@ function editOwner(body) {
 
 function deleteArtById(idPiece) {
     return fetch(`${API_URL}/art/piece/${idPiece}`, {
-        method: 'DELETE'
+      method: 'DELETE'
+    })
+      .then(res => {
+        if (res.status !== 200) {
+          throw new Error(res.statusText);
+        }
+        return res.json();
       })
-        .then(res => {
-            if (!res.ok) throw new Error(res.statusText);
-            return res.json()
-        })
-        .then(res => (res.data))
-}
-
+      .then(res => res.data);
+  }
+  
 
 export {
     getAllCategories,
